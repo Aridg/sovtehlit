@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="29.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.MainFormController">
+   <children>
+      <MenuBar prefHeight="29.0" prefWidth="648.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Справочники">
+              <items>
+                <MenuItem fx:id="customerMenu" mnemonicParsing="false" onAction="#customerMenuOnClick" text="Заказчики" />
+                  <MenuItem fx:id="rawMaterialsMenu" mnemonicParsing="false" onAction="#rawMaterialsMenuOnClick" text="Сырье" />
+                  <MenuItem fx:id="materialTypesMenu" mnemonicParsing="false" onAction="#materialTypesMenuOnClick" text="Тип материала" />
+                  <MenuItem fx:id="materialsMenu" mnemonicParsing="false" onAction="#materialsMenuOnClick" text="Материалы" />
+                  <MenuItem fx:id="contractsMenu" mnemonicParsing="false" onAction="#contractsMenuOnClick" text="Договоры" />
+                  <MenuItem fx:id="specificationsMenu" mnemonicParsing="false" onAction="#specificationsMenuOnClick" text="Спецификации" />
+                  <MenuItem fx:id="productionMenu" mnemonicParsing="false" onAction="#productionMenuOnClick" text="Продукция" />
+                  <MenuItem fx:id="unitsMenu" mnemonicParsing="false" onAction="#unitsMenuOnClick" text="Еденицы измерения" />
+              </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

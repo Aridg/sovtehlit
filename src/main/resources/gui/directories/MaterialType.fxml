@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="code.gui.controllers.directories.MaterialTypeController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <TableView fx:id="customersTable" prefHeight="400.0" prefWidth="500.0">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="75.0" text="№" />
+                <TableColumn fx:id="nameColumn" prefWidth="424.0" text="Наименование" />
+            </columns>
+        </TableView>
+        <Button layoutX="558.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-image: url('icons/refresh.png');" />
+        <Button layoutX="518.0" layoutY="130.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
+        <Button layoutX="517.0" layoutY="175.0" mnemonicParsing="false" onAction="#onEditClick" text="Изменить" />
+        <Button layoutX="518.0" layoutY="222.0" mnemonicParsing="false" onAction="#onDelClick" prefHeight="25.0" prefWidth="69.0" text="Удалить" />
+    </children>
+</AnchorPane>
