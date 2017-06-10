@@ -62,6 +62,11 @@ public class CustomersEntity implements IModel {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     @Transient
     public int getIdP() {
         return idP.get();

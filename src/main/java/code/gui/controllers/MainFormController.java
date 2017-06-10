@@ -2,9 +2,7 @@ package code.gui.controllers;
 
 import code.accessoory.GuiForm;
 import code.accessoory.MenuType;
-import code.gui.controllers.directories.CustomersController;
-import code.gui.controllers.directories.MaterialTypeController;
-import code.gui.controllers.directories.RawMaterialController;
+import code.gui.controllers.directories.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -89,6 +87,13 @@ public class MainFormController implements IController{
     }
 
     public void contractsMenuOnClick(ActionEvent event) {
+        GuiForm<AnchorPane, ContractsController> form = new GuiForm<>(MenuType.CONTRACTS.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        popUpStage.setTitle("Договоры");
+        Scene scene = new Scene(pane);
+        popUpStage.setScene(scene);
+        popUpStage.showAndWait();
     }
 
     public void specificationsMenuOnClick(ActionEvent event) {
@@ -98,5 +103,13 @@ public class MainFormController implements IController{
     }
 
     public void unitsMenuOnClick(ActionEvent event) {
+
+        GuiForm<AnchorPane, UnitMeasurementController> form = new GuiForm<>(MenuType.UNITS.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        popUpStage.setTitle("Единицы измерения");
+        Scene scene = new Scene(pane);
+        popUpStage.setScene(scene);
+        popUpStage.showAndWait();
     }
 }
