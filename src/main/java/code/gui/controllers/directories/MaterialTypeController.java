@@ -1,14 +1,21 @@
 package code.gui.controllers.directories;
 
+import code.accessoory.GuiForm;
+import code.accessoory.MenuType;
 import code.gui.controllers.IDirectoryController;
+import code.gui.controllers.directories.input_form.MaterialInputController;
+import code.gui.controllers.directories.input_form.MaterialTypeInputController;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.MaterialTypeEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.hibernate.Session;
 
 /**
@@ -19,7 +26,9 @@ public class MaterialTypeController extends IDirectoryController{
     @FXML private TableColumn<MaterialTypeEntity, Integer> idColumn;
     @FXML private TableColumn<MaterialTypeEntity, String> nameColumn;
 
+    @FXML
     ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage();
 
     public MaterialTypeController() {
         Session session = HibernateSessionFactory.getSession();
@@ -38,6 +47,14 @@ public class MaterialTypeController extends IDirectoryController{
 
     @Override
     protected void onAddClick(ActionEvent event) {
+
+        GuiForm<AnchorPane, MaterialTypeInputController> form  = new GuiForm<AnchorPane, MaterialTypeInputController>(MenuType.MATERIAL_TYPE_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Добавление типа материала");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        stage.showAndWait();
 
     }
 

@@ -8,18 +8,18 @@ import javafx.scene.control.TextField;
 /**
  * Created by Asus on 11.06.2017.
  */
-public class CustomersInputController extends IControllerInput {
+public class CustomersInputController implements IControllerInput {
 
     @FXML
     private TextField nameCustomer;
 
     @Override
-    protected void onAddClick(ActionEvent event) {
+    public void onAddClick(ActionEvent event) {
 
     }
 
     @Override
-    protected void onAnnulmentClick(ActionEvent event) {
+    public void onAnnulmentClick(ActionEvent event) {
 
     }
 }
