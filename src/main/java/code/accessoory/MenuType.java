@@ -6,11 +6,16 @@ package code.accessoory;
 public enum MenuType {
     CUSTOMERS(new String[]{"directories", "Customers.fxml"}),
     RAW_MATERIALS(new String[]{"directories", "RawMaterial.fxml"}),
-    MATERIAL_TYPE(new String[]{"directories", "MaterialType.fxml"}),
+    MATERIAL_TYPE(new String[]{"directories", "MaterialTypeInput.fxml"}),
     MATERIALS(new String[]{"directories", "Materials.fxml"}),
     CONTRACTS(new String[]{"directories", "Contracts.fxml"}),
-    UNITS(new String[]{"directories", "Units.fxml"})
-    ;
+    UNITS(new String[]{"directories", "Units.fxml"}),
+    CONTRACT_INPUT(new String[]{"directories","input_form","ContractInput.fxml"}),
+    COSTOMER_INPUT(new String[]{"directories","input_form","CustomerInput.fxml"}),
+    MATERIAL_INPUT(new String[]{"directories","input_form","MaterialsInput.fxml"}),
+    MATERIAL_TYPE_INPUT(new String[]{"directories","input_form","MaterialTypeInput.fxml"}),
+    RAW_MATERIAL_INPUT(new String[]{"directories","input_form","RawMaterialInput.fxml"}),
+    UNITS_INPUT(new String[]{"directories","input_form","UnitsInput.fxml"});
 
 
     private String[] filePath;
