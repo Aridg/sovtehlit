@@ -30,16 +30,9 @@ public class ContractsController extends IDirectoryController{
     ObservableList<ContractEntity> contractModels = FXCollections.observableArrayList();
     ObservableList<CustomersEntity> dataCustomers = FXCollections.observableArrayList();
 
-    public ContractsController() {
-        Session session = HibernateSessionFactory.getSession();
-        contractModels.addAll(session.createQuery("from ContractEntity ", ContractEntity.class)
-                .getResultList());
-        session.close();
-    }
-
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().datePProperty());
@@ -70,6 +63,18 @@ public class ContractsController extends IDirectoryController{
                 .getResultList();
         dataCustomers.addAll(list);
         customers.setItems(dataCustomers);
+        session.close();
+        customers.getSelectionModel().selectFirst();
+        onCustomerChange(null);
+    }
+
+    @FXML
+    private void onCustomerChange(ActionEvent event) {
+        contractModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        contractModels.addAll(session.createQuery("from ContractEntity where customerId = :customer", ContractEntity.class)
+                .setParameter("customer", customers.getSelectionModel().getSelectedItem().getId())
+                .getResultList());
         session.close();
     }
 }

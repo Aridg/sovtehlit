@@ -16,6 +16,7 @@ public class ContractEntity implements IModel {
     private int id;
     private String name;
     private Date date;
+    private int customerId;
 
     private IntegerProperty idP = new SimpleIntegerProperty();
     private StringProperty nameP = new SimpleStringProperty();
@@ -54,6 +55,16 @@ public class ContractEntity implements IModel {
         setDateP(date.toLocalDate());
     }
 
+    @Basic
+    @Column(name = "customer_id", nullable = false)
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,7 +75,7 @@ public class ContractEntity implements IModel {
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
-
+        if (customerId != that.customerId) return false;
         return true;
     }
 
@@ -73,6 +84,7 @@ public class ContractEntity implements IModel {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + customerId;
         return result;
     }
 

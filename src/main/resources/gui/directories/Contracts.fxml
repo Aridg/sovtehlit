@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="532.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.ContractsController">
+<AnchorPane prefHeight="532.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.ContractsController">
     <children>
         <TableView fx:id="customersTable" layoutX="14.0" layoutY="130.0" prefHeight="404.0" prefWidth="500.0">
             <columns>
@@ -19,7 +19,7 @@
         <Button layoutX="526.0" layoutY="274.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
         <Button layoutX="525.0" layoutY="319.0" mnemonicParsing="false" onAction="#onEditClick" text="Изменить" />
         <Button layoutX="526.0" layoutY="366.0" mnemonicParsing="false" onAction="#onDelClick" prefHeight="25.0" prefWidth="69.0" text="Удалить" />
-      <ComboBox fx:id="customers" layoutX="14.0" layoutY="41.0" prefHeight="25.0" prefWidth="500.0" />
+      <ComboBox fx:id="customers" layoutX="14.0" layoutY="41.0" onAction="#onCustomerChange" prefHeight="25.0" prefWidth="500.0" />
       <Label layoutX="239.0" layoutY="24.0" text="Заказчик" />
     </children>
 </AnchorPane>
