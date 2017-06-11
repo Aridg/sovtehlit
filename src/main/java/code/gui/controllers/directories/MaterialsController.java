@@ -1,6 +1,8 @@
 package code.gui.controllers.directories;
 
 import code.gui.controllers.IDirectoryController;
+import code.hibernate.HibernateSessionFactory;
+import code.hibernate.directories.ContractEntity;
 import code.hibernate.directories.CustomersEntity;
 import code.hibernate.directories.MaterialsEntity;
 import code.hibernate.directories.views.MaterialVEntity;
@@ -10,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import org.hibernate.Session;
 
 /**
  * Created by Алексей on 01.05.2017.
@@ -25,7 +28,10 @@ public class MaterialsController extends IDirectoryController{
 
     @FXML
     public void initialize() {
-        data.addAll(getData(MaterialVEntity.class));
+        Session session = HibernateSessionFactory.getSession();
+        data.addAll(session.createQuery("from MaterialVEntity ", MaterialVEntity.class)
+                .getResultList());
+        session.close();
         tableConfiguration();
     }
 

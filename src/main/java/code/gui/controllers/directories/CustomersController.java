@@ -23,7 +23,10 @@ public class CustomersController extends IDirectoryController {
     private ObservableList<CustomersEntity> customerModels = FXCollections.observableArrayList();
 
     public CustomersController() {
-        customerModels.addAll(getData(CustomersEntity.class));
+        Session session = HibernateSessionFactory.getSession();
+        customerModels.addAll(session.createQuery("from CustomersEntity ", CustomersEntity.class)
+                .getResultList());
+        session.close();
     }
 
     @FXML

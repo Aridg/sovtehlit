@@ -31,7 +31,10 @@ public class ContractsController extends IDirectoryController{
     ObservableList<CustomersEntity> dataCustomers = FXCollections.observableArrayList();
 
     public ContractsController() {
-        contractModels.addAll(getData(ContractEntity.class));
+        Session session = HibernateSessionFactory.getSession();
+        contractModels.addAll(session.createQuery("from ContractEntity ", ContractEntity.class)
+                .getResultList());
+        session.close();
     }
 
 

@@ -1,6 +1,7 @@
 package code.gui.controllers.directories;
 
 import code.gui.controllers.IDirectoryController;
+import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.MaterialTypeEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import org.hibernate.Session;
 
 /**
  * Created by Алексей on 01.05.2017.
@@ -20,7 +22,10 @@ public class MaterialTypeController extends IDirectoryController{
     ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
 
     public MaterialTypeController() {
-       materialTypeModels.addAll(getData(MaterialTypeEntity.class));
+        Session session = HibernateSessionFactory.getSession();
+        materialTypeModels.addAll(session.createQuery("from MaterialTypeEntity ", MaterialTypeEntity.class)
+                .getResultList());
+        session.close();
     }
 
     @FXML
