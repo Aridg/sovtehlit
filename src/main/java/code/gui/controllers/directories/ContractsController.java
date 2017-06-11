@@ -57,10 +57,11 @@ public class ContractsController extends IDirectoryController{
     }
 
     private void getCustomers()
-    {
+{
         Session session = HibernateSessionFactory.getSession();
         List<CustomersEntity> list = session.createQuery("from CustomersEntity ", CustomersEntity.class)
                 .getResultList();
+        dataCustomers.clear();
         dataCustomers.addAll(list);
         customers.setItems(dataCustomers);
         session.close();
@@ -70,6 +71,8 @@ public class ContractsController extends IDirectoryController{
 
     @FXML
     private void onCustomerChange(ActionEvent event) {
+        if(customers.getItems().size() == 0)
+            return;
         contractModels.clear();
         Session session = HibernateSessionFactory.getSession();
         contractModels.addAll(session.createQuery("from ContractEntity where customerId = :customer", ContractEntity.class)
