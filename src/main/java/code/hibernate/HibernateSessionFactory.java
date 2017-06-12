@@ -9,9 +9,13 @@ import org.hibernate.cfg.Configuration;
  * Created by Алексей on 21.04.2017.
  */
 public class HibernateSessionFactory {
-    private static final SessionFactory ourSessionFactory;
+    private static SessionFactory ourSessionFactory;
 
-    static {
+    public static Session getSession() throws HibernateException {
+        return ourSessionFactory.openSession();
+    }
+
+    public static void init(){
         try {
             ourSessionFactory = new Configuration().
                     configure("hibernate.cfg.xml").
@@ -20,12 +24,6 @@ public class HibernateSessionFactory {
             throw new ExceptionInInitializerError(ex);
         }
     }
-
-    public static Session getSession() throws HibernateException {
-        return ourSessionFactory.openSession();
-    }
-
-    public static void init(){}
 
     public static void shutdown() {
         ourSessionFactory.close();

@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -53,7 +54,7 @@ public class ContractsController extends IDirectoryController{
     @Override
     protected void onAddClick(ActionEvent event) {
 
-        GuiForm<AnchorPane, ContractInputController> form  = new GuiForm<AnchorPane, ContractInputController>(MenuType.CONTRACT_INPUT.getFilePath());
+        GuiForm<AnchorPane, ContractInputController> form  = new GuiForm<>(MenuType.CONTRACT_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
 
         stage.setTitle("Добавление контракта");
@@ -69,7 +70,21 @@ public class ContractsController extends IDirectoryController{
 
     @Override
     protected void onDelClick(ActionEvent event) {
-
+        int selectedIndex = customersTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex < 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        ContractEntity elem = session.createQuery("from ContractEntity where id = :id", ContractEntity.class)
+                .setParameter("id", customersTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.delete(elem);
+        session.getTransaction().commit();
+        customersTable.getItems().remove(customersTable.getSelectionModel().getSelectedItem());
+        session.close();
     }
 
     private void getCustomers()
