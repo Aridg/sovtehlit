@@ -2,18 +2,23 @@ package code.gui.controllers.directories.input_form;
 
 import code.gui.controllers.IControllerInput;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 /**
  * Created by Asus on 11.06.2017.
  */
-public class MaterialTypeInputController extends IControllerInput {
+public class MaterialTypeInputController implements IControllerInput {
+
+    @FXML private TextField nameMaterialType;
+
     @Override
-    protected void onAddClick(ActionEvent event) {
+    public void onAddClick(ActionEvent event) {
 
     }
 
     @Override
-    protected void onAnnulmentClick(ActionEvent event) {
+    public void onAnnulmentClick(ActionEvent event) {
 
     }
 }

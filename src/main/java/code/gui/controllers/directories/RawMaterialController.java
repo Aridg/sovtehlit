@@ -1,14 +1,20 @@
 package code.gui.controllers.directories;
 
+import code.accessoory.GuiForm;
+import code.accessoory.MenuType;
 import code.gui.controllers.IDirectoryController;
+import code.gui.controllers.directories.input_form.MaterialInputController;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.RowMaterialEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.hibernate.Session;
 
 /**
@@ -25,6 +31,7 @@ public class RawMaterialController extends IDirectoryController {
 
     @FXML
     ObservableList<RowMaterialEntity> rowMaterialModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage ();
 
     public RawMaterialController() {
         Session session = HibernateSessionFactory.getSession();
@@ -44,6 +51,14 @@ public class RawMaterialController extends IDirectoryController {
 
     @Override
     protected void onAddClick(ActionEvent event) {
+
+        GuiForm<AnchorPane, RawMaterialController> form  = new GuiForm<AnchorPane, RawMaterialController>(MenuType.RAW_MATERIAL_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Добавление сырья");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        stage.showAndWait();
 
     }
 

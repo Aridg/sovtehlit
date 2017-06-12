@@ -1,6 +1,9 @@
 package code.gui.controllers.directories;
 
+import code.accessoory.GuiForm;
+import code.accessoory.MenuType;
 import code.gui.controllers.IDirectoryController;
+import code.gui.controllers.directories.input_form.UnitInputController;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.UnitsEntity;
 import javafx.beans.property.DoubleProperty;
@@ -8,8 +11,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.hibernate.Session;
 
 /**
@@ -26,6 +32,7 @@ public class UnitMeasurementController extends IDirectoryController {
     private TableColumn<UnitsEntity, Double> factorColumn;
 
     ObservableList<UnitsEntity> unitsModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage();
 
     public UnitMeasurementController() {
         Session session = HibernateSessionFactory.getSession();
@@ -46,6 +53,14 @@ public class UnitMeasurementController extends IDirectoryController {
 
     @Override
     protected void onAddClick(ActionEvent event) {
+
+        GuiForm<AnchorPane, UnitInputController> form  = new GuiForm<AnchorPane, UnitInputController>(MenuType.UNITS_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Добавление единицы измерения");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        stage.showAndWait();
 
     }
 

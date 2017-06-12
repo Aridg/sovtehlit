@@ -2,18 +2,25 @@ package code.gui.controllers.directories.input_form;
 
 import code.gui.controllers.IControllerInput;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 /**
  * Created by Asus on 11.06.2017.
  */
-public class UnitInputController extends IControllerInput {
+public class UnitInputController implements IControllerInput {
+
+
+    @FXML private TextField nameUnit;
+    @FXML private TextField factor;
+
     @Override
-    protected void onAddClick(ActionEvent event) {
+    public void onAddClick(ActionEvent event) {
 
     }
 
     @Override
-    protected void onAnnulmentClick(ActionEvent event) {
+    public void onAnnulmentClick(ActionEvent event) {
 
     }
 }

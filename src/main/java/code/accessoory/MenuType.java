@@ -6,7 +6,7 @@ package code.accessoory;
 public enum MenuType {
     CUSTOMERS(new String[]{"directories", "Customers.fxml"}),
     RAW_MATERIALS(new String[]{"directories", "RawMaterial.fxml"}),
-    MATERIAL_TYPE(new String[]{"directories", "MaterialTypeInput.fxml"}),
+    MATERIAL_TYPE(new String[]{"directories", "MaterialType.fxml"}),
     MATERIALS(new String[]{"directories", "Materials.fxml"}),
     CONTRACTS(new String[]{"directories", "Contracts.fxml"}),
     UNITS(new String[]{"directories", "Units.fxml"}),

@@ -10,17 +10,17 @@ import javafx.scene.control.TextField;
 /**
  * Created by Asus on 11.06.2017.
  */
-public class MaterialInputController extends IControllerInput {
+public class MaterialInputController implements IControllerInput {
     @FXML private TextField nameMaterial;
     @FXML private ChoiceBox<MaterialTypeEntity> materialTypes;
 
     @Override
-    protected void onAddClick(ActionEvent event) {
+    public void onAddClick(ActionEvent event) {
 
     }
 
     @Override
-    protected void onAnnulmentClick(ActionEvent event) {
+    public void onAnnulmentClick(ActionEvent event) {
 
     }
 }

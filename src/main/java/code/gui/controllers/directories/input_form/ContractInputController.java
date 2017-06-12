@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 /**
  * Created by Алексей on 10.06.2017.
  */
-public class ContractInputController extends IControllerInput {
+public class ContractInputController implements IControllerInput {
 
 
     @FXML private TextField nameContract;
@@ -20,12 +20,12 @@ public class ContractInputController extends IControllerInput {
     @FXML private DatePicker date;
 
     @Override
-    protected void onAddClick(ActionEvent event) {
+    public void onAddClick(ActionEvent event) {
 
     }
 
     @Override
-    protected void onAnnulmentClick(ActionEvent event) {
+    public void onAnnulmentClick(ActionEvent event) {
 
     }
 }
