@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.Session;
 
 /**
@@ -31,7 +32,7 @@ public class MaterialsController extends IDirectoryController{
     @FXML private TableColumn<MaterialVEntity, String> nameColumn;
     @FXML private TableColumn<MaterialVEntity, String> typeMaterialColumn;
 
-    private Stage stage = new Stage();
+    private Stage stage = new Stage(StageStyle.UTILITY);
     private ObservableList<MaterialVEntity> data = FXCollections.observableArrayList();
 
     @FXML

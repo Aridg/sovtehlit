@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.Session;
 
 /**
@@ -32,8 +33,8 @@ public class UnitMeasurementController extends IDirectoryController {
     @FXML
     private TableColumn<UnitsEntity, Double> factorColumn;
 
-    ObservableList<UnitsEntity> unitsModels = FXCollections.observableArrayList();
-    private Stage stage = new Stage();
+    private ObservableList<UnitsEntity> unitsModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage(StageStyle.UTILITY);
 
     public UnitMeasurementController() {
         Session session = HibernateSessionFactory.getSession();
@@ -93,6 +94,12 @@ public class UnitMeasurementController extends IDirectoryController {
 
     @Override
     protected void onUpdateClick(ActionEvent event) {
-
+        unitsModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        unitsModels.addAll(session.createQuery("from UnitsEntity ", UnitsEntity.class)
+                .getResultList());
+        session.close();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Данные успешно обновлены");
+        alert.showAndWait();
     }
 }

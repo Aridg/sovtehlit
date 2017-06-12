@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.Session;
 
 /**
@@ -26,9 +27,8 @@ public class MaterialTypeController extends IDirectoryController{
     @FXML private TableColumn<MaterialTypeEntity, Integer> idColumn;
     @FXML private TableColumn<MaterialTypeEntity, String> nameColumn;
 
-    @FXML
-    ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
-    private Stage stage = new Stage();
+    private ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage(StageStyle.UTILITY);
 
     public MaterialTypeController() {
         Session session = HibernateSessionFactory.getSession();

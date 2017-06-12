@@ -3,6 +3,7 @@ package code.gui.controllers.directories.input_form;
 import code.gui.controllers.IControllerInput;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.MaterialTypeEntity;
+import code.hibernate.directories.MaterialsEntity;
 import code.hibernate.directories.views.MaterialVEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,10 +44,10 @@ public class MaterialInputController implements IControllerInput {
         try{
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
-            MaterialVEntity materialVEntity = new MaterialVEntity();
-            materialVEntity.setName(nameMaterial.getText());
-            materialVEntity.setType(materialTypes.getSelectionModel().getSelectedItem().getName());
-            session.save(materialVEntity);
+            MaterialsEntity materialEntity = new MaterialsEntity();
+            materialEntity.setName(nameMaterial.getText());
+            materialEntity.setType(materialTypes.getSelectionModel().getSelectedItem().getId());
+            session.save(materialEntity);
             session.getTransaction().commit();
             session.close();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Новый договор успешно добавлен");

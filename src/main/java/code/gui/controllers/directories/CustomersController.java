@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class CustomersController extends IDirectoryController {
     @FXML private TableColumn<CustomersEntity, String> nameColumn;
 
 
-    private Stage stage = new Stage();
+    private Stage stage = new Stage(StageStyle.UTILITY);
     private ObservableList<CustomersEntity> customerModels = FXCollections.observableArrayList();
 
     public CustomersController() {

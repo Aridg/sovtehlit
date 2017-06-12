@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.Session;
 
 
@@ -35,10 +36,9 @@ public class ContractsController extends IDirectoryController{
     @FXML private TableColumn<ContractEntity, String> nameColumn;
     @FXML private ComboBox<CustomersEntity> customers;
 
-    private Stage stage = new Stage();
-
-    ObservableList<ContractEntity> contractModels = FXCollections.observableArrayList();
-    ObservableList<CustomersEntity> dataCustomers = FXCollections.observableArrayList();
+    private Stage stage = new Stage(StageStyle.UTILITY);
+    private ObservableList<ContractEntity> contractModels = FXCollections.observableArrayList();
+    private ObservableList<CustomersEntity> dataCustomers = FXCollections.observableArrayList();
 
 
     @FXML

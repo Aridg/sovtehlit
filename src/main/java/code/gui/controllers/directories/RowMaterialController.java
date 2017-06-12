@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.Session;
 
 /**
@@ -30,9 +31,8 @@ public class RowMaterialController extends IDirectoryController {
     @FXML
     private TableColumn<RowMaterialEntity, String> nameColumn;
 
-    @FXML
-    ObservableList<RowMaterialEntity> rowMaterialModels = FXCollections.observableArrayList();
-    private Stage stage = new Stage ();
+    private ObservableList<RowMaterialEntity> rowMaterialModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage (StageStyle.UTILITY);
 
     public RowMaterialController() {
         Session session = HibernateSessionFactory.getSession();
