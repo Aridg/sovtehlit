@@ -9,17 +9,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 
 public class StartApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-               configPrimary(primaryStage);
+        configPrimary(primaryStage);
+
+        Stage loaderStage = new Stage(StageStyle.UNDECORATED);
 
         GuiForm loader = new GuiForm("Loader.fxml");
-        primaryStage.setScene(new Scene(loader.getParent()));
-        primaryStage.show();
+        loaderStage.setScene(new Scene(loader.getParent()));
+        loaderStage.centerOnScreen();
+        loaderStage.show();
+
 
         GuiForm<AnchorPane, MainFormController> mainForm = new GuiForm<>("MainForm.fxml");
         AnchorPane root = mainForm.getParent();
@@ -29,8 +35,12 @@ public class StartApp extends Application {
         new Thread(() -> {
             try {
                 HibernateSessionFactory.init();
-                Platform.runLater(() -> primaryStage.setScene(new Scene(root, 300, 275)));
-            }catch (ExceptionInInitializerError ex){
+                Platform.runLater(() -> {
+                    loaderStage.close();
+                    primaryStage.setScene(new Scene(root, 300, 275));
+                    primaryStage.show();
+                });
+            } catch (ExceptionInInitializerError ex) {
                 ex.printStackTrace();
                 Platform.runLater(() -> {
                     new Alert(Alert.AlertType.ERROR, "Ошибка подключения к базе").showAndWait();
@@ -47,8 +57,9 @@ public class StartApp extends Application {
         System.exit(0);
     }
 
-    private void configPrimary(Stage primaryStage){
-        primaryStage.setTitle("Работа с БД");
+    private void configPrimary(Stage primaryStage) {
+        primaryStage.setTitle("Управление производством");
+        primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setOnCloseRequest(event -> {
             closeApp();
         });
