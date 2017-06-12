@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.input_form.RawMaterialInputController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.input_form.RowMaterialInputController">
    <children>
       <TextField fx:id="nameRawMaterial" layoutX="58.0" layoutY="58.0" prefHeight="25.0" prefWidth="334.0" />
       <Label layoutX="179.0" layoutY="37.0" text="Наименование" />

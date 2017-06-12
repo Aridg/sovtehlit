@@ -15,4 +15,5 @@ public abstract class IDirectoryController implements IController{
     @FXML protected abstract void onAddClick(ActionEvent event);
     @FXML protected abstract void onEditClick(ActionEvent event);
     @FXML protected abstract void onDelClick(ActionEvent event);
+    @FXML protected  abstract  void onUpdateClick(ActionEvent event);
 }

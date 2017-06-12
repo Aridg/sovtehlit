@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
@@ -25,10 +26,10 @@ import org.hibernate.Session;
  * Created by Алексей on 01.05.2017.
  */
 public class MaterialsController extends IDirectoryController{
-    public TableView<MaterialVEntity> customersTable;
-    public TableColumn<MaterialVEntity, Integer> idColumn;
-    public TableColumn<MaterialVEntity, String> nameColumn;
-    public TableColumn<MaterialVEntity, String> typeMaterialColumn;
+    @FXML private TableView<MaterialVEntity> materialVTable;
+    @FXML private TableColumn<MaterialVEntity, Integer> idColumn;
+    @FXML private TableColumn<MaterialVEntity, String> nameColumn;
+    @FXML private TableColumn<MaterialVEntity, String> typeMaterialColumn;
 
     private Stage stage = new Stage();
     private ObservableList<MaterialVEntity> data = FXCollections.observableArrayList();
@@ -51,6 +52,7 @@ public class MaterialsController extends IDirectoryController{
         stage.setTitle("Добавление материла");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
+        form.getController().setThisStage(stage);
         stage.showAndWait();
     }
 
@@ -62,13 +64,40 @@ public class MaterialsController extends IDirectoryController{
     @Override
     protected void onDelClick(ActionEvent event) {
 
+        int selectedIndex = materialVTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex < 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        MaterialVEntity elem = session.createQuery("from MaterialVEntity where id = :id", MaterialVEntity.class)
+                .setParameter("id", materialVTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.delete(elem);
+        session.getTransaction().commit();
+        materialVTable.getItems().remove(materialVTable.getSelectionModel().getSelectedItem());
+        session.close();
+
+    }
+
+    @Override
+    protected void onUpdateClick(ActionEvent event) {
+        data.clear();
+        Session session = HibernateSessionFactory.getSession();
+        data.addAll(session.createQuery("from MaterialVEntity ", MaterialVEntity.class)
+                .getResultList());
+        session.close();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Данные успешно обновлены");
+        alert.showAndWait();
     }
 
     private void tableConfiguration(){
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         typeMaterialColumn.setCellValueFactory(cellData -> cellData.getValue().typePProperty());
-        customersTable.setItems(data);
-        customersTable.setColumnResizePolicy(param -> false);
+        materialVTable.setItems(data);
+        materialVTable.setColumnResizePolicy(param -> false);
     }
 }

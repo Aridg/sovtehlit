@@ -60,6 +60,8 @@ public class ContractsController extends IDirectoryController{
         stage.setTitle("Добавление контракта");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setSelectedCustomer(customers.getSelectionModel().getSelectedItem());
         stage.showAndWait();
     }
 
@@ -85,6 +87,18 @@ public class ContractsController extends IDirectoryController{
         session.getTransaction().commit();
         customersTable.getItems().remove(customersTable.getSelectionModel().getSelectedItem());
         session.close();
+    }
+
+    @Override
+    protected void onUpdateClick(ActionEvent event) {
+        contractModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        contractModels.addAll(session.createQuery("from ContractEntity where customerId = :customer", ContractEntity.class)
+                .setParameter("customer", customers.getSelectionModel().getSelectedItem().getId())
+                .getResultList());
+        session.close();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Данные успешно обновлены");
+        alert.showAndWait();
     }
 
     private void getCustomers()

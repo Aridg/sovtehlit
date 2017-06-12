@@ -1,13 +1,11 @@
 package code.gui.controllers.directories;
 
-
 import code.accessoory.GuiForm;
 import code.accessoory.MenuType;
 import code.gui.controllers.IDirectoryController;
-import code.gui.controllers.directories.input_form.ContractInputController;
-import code.gui.controllers.directories.input_form.CustomersInputController;
-import code.hibernate.directories.CustomersEntity;
+import code.gui.controllers.directories.input_form.RowMaterialInputController;
 import code.hibernate.HibernateSessionFactory;
+import code.hibernate.directories.RowMaterialEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,20 +18,25 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
-import java.util.List;
+/**
+ * Created by Алексей on 01.05.2017.
+ */
+public class RowMaterialController extends IDirectoryController {
 
-public class CustomersController extends IDirectoryController {
-    @FXML private TableView<CustomersEntity> customersTable;
-    @FXML private TableColumn<CustomersEntity, Integer> idColumn;
-    @FXML private TableColumn<CustomersEntity, String> nameColumn;
+    @FXML
+    private TableView<RowMaterialEntity> rowMaterialTable;
+    @FXML
+    private TableColumn<RowMaterialEntity, Integer> idColumn;
+    @FXML
+    private TableColumn<RowMaterialEntity, String> nameColumn;
 
+    @FXML
+    ObservableList<RowMaterialEntity> rowMaterialModels = FXCollections.observableArrayList();
+    private Stage stage = new Stage ();
 
-    private Stage stage = new Stage();
-    private ObservableList<CustomersEntity> customerModels = FXCollections.observableArrayList();
-
-    public CustomersController() {
+    public RowMaterialController() {
         Session session = HibernateSessionFactory.getSession();
-        customerModels.addAll(session.createQuery("from CustomersEntity ", CustomersEntity.class)
+        rowMaterialModels.addAll(session.createQuery("from RowMaterialEntity ", RowMaterialEntity.class)
                 .getResultList());
         session.close();
     }
@@ -42,18 +45,18 @@ public class CustomersController extends IDirectoryController {
     public void initialize() {
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
-        customersTable.setItems(customerModels);
-        customersTable.setColumnResizePolicy(param -> false);
+        rowMaterialTable.setItems(rowMaterialModels);
+        rowMaterialTable.setColumnResizePolicy(param -> false);
     }
 
 
     @Override
     protected void onAddClick(ActionEvent event) {
 
-        GuiForm<AnchorPane, CustomersInputController> form  = new GuiForm<AnchorPane, CustomersInputController>(MenuType.COSTOMER_INPUT.getFilePath());
+        GuiForm<AnchorPane, RowMaterialInputController> form  = new GuiForm<AnchorPane, RowMaterialInputController>(MenuType.RAW_MATERIAL_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
 
-        stage.setTitle("Добавление заказчика");
+        stage.setTitle("Добавление сырья");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
@@ -69,7 +72,7 @@ public class CustomersController extends IDirectoryController {
     @Override
     protected void onDelClick(ActionEvent event) {
 
-        int selectedIndex = customersTable.getSelectionModel().getSelectedIndex();
+        int selectedIndex = rowMaterialTable.getSelectionModel().getSelectedIndex();
         if(selectedIndex < 0){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
             alert.showAndWait();
@@ -77,20 +80,20 @@ public class CustomersController extends IDirectoryController {
         }
         Session session = HibernateSessionFactory.getSession();
         session.beginTransaction();
-        CustomersEntity elem = session.createQuery("from CustomersEntity where id = :id", CustomersEntity.class)
-                .setParameter("id", customersTable.getSelectionModel().getSelectedItem().getId())
+        RowMaterialEntity elem = session.createQuery("from MaterialTypeEntity where id = :id", RowMaterialEntity.class)
+                .setParameter("id", rowMaterialTable.getSelectionModel().getSelectedItem().getId())
                 .getSingleResult();
         session.delete(elem);
         session.getTransaction().commit();
-        customersTable.getItems().remove(customersTable.getSelectionModel().getSelectedItem());
+        rowMaterialTable.getItems().remove(rowMaterialTable.getSelectionModel().getSelectedItem());
         session.close();
     }
 
     @Override
     protected void onUpdateClick(ActionEvent event) {
-        customerModels.clear();
+        rowMaterialModels.clear();
         Session session = HibernateSessionFactory.getSession();
-        customerModels.addAll(session.createQuery("from CustomersEntity ", CustomersEntity.class)
+        rowMaterialModels.addAll(session.createQuery("from RowMaterialEntity ", RowMaterialEntity.class)
                 .getResultList());
         session.close();
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Данные успешно обновлены");

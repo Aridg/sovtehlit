@@ -12,7 +12,7 @@
       <ChoiceBox fx:id="materialTypes" layoutX="286.0" layoutY="50.0" prefWidth="150.0" />
       <Label layoutX="47.0" layoutY="34.0" text="Наименование" />
       <Label layoutX="320.0" layoutY="34.0" text="Тип материала" />
-      <Button fx:id="onAddClick" layoutX="129.0" layoutY="102.0" mnemonicParsing="false" text="Добавить" />
-      <Button fx:id="onAnnulmentClick" layoutX="251.0" layoutY="102.0" mnemonicParsing="false" text="Отменить" />
+      <Button onAction="#onAddClick" layoutX="129.0" layoutY="102.0" mnemonicParsing="false" text="Добавить" />
+      <Button onAction="#onAnnulmentClick" layoutX="251.0" layoutY="102.0" mnemonicParsing="false" text="Отменить" />
    </children>
 </AnchorPane>

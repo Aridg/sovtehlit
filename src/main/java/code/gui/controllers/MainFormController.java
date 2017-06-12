@@ -57,7 +57,7 @@ public class MainFormController implements IController{
     }
 
     public void rawMaterialsMenuOnClick(ActionEvent event) {
-        GuiForm<AnchorPane, RawMaterialController> form = new GuiForm<>(MenuType.RAW_MATERIALS.getFilePath());
+        GuiForm<AnchorPane, RowMaterialController> form = new GuiForm<>(MenuType.RAW_MATERIALS.getFilePath());
         AnchorPane pane = form.getParent();
 
         popUpStage.setTitle("Сырье");
