@@ -12,12 +12,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
+
+import java.util.Optional;
 
 /**
  * Created by Алексей on 01.05.2017.
@@ -55,6 +58,7 @@ public class MaterialTypeController extends IDirectoryController{
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
         stage.showAndWait();
 
     }
@@ -66,22 +70,27 @@ public class MaterialTypeController extends IDirectoryController{
 
     @Override
     protected void onDelClick(ActionEvent event) {
-
-        int selectedIndex = materialTypeTable.getSelectionModel().getSelectedIndex();
-        if(selectedIndex < 0){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
-            alert.showAndWait();
-            return;
+        Alert alertApproval = new Alert(Alert.AlertType.WARNING, "Вы точно хотите удалить выбранный объект?");
+        alertApproval.setTitle("WARNING!");
+        alertApproval.setHeaderText(null);
+        Optional<ButtonType> result = alertApproval.showAndWait();
+        if(result.get() == ButtonType.OK) {
+            int selectedIndex = materialTypeTable.getSelectionModel().getSelectedIndex();
+            if (selectedIndex < 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+                alert.showAndWait();
+                return;
+            }
+            Session session = HibernateSessionFactory.getSession();
+            session.beginTransaction();
+            MaterialTypeEntity elem = session.createQuery("from MaterialTypeEntity where id = :id", MaterialTypeEntity.class)
+                    .setParameter("id", materialTypeTable.getSelectionModel().getSelectedItem().getId())
+                    .getSingleResult();
+            session.delete(elem);
+            session.getTransaction().commit();
+            materialTypeTable.getItems().remove(materialTypeTable.getSelectionModel().getSelectedItem());
+            session.close();
         }
-        Session session = HibernateSessionFactory.getSession();
-        session.beginTransaction();
-        MaterialTypeEntity elem = session.createQuery("from MaterialTypeEntity where id = :id", MaterialTypeEntity.class)
-                .setParameter("id", materialTypeTable.getSelectionModel().getSelectedItem().getId())
-                .getSingleResult();
-        session.delete(elem);
-        session.getTransaction().commit();
-        materialTypeTable.getItems().remove(materialTypeTable.getSelectionModel().getSelectedItem());
-        session.close();
     }
 
     @Override
@@ -92,6 +101,12 @@ public class MaterialTypeController extends IDirectoryController{
                 .getResultList());
         session.close();
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Данные успешно обновлены");
+        alert.setTitle("OK!");
+        alert.setHeaderText(null);
         alert.showAndWait();
     }
+    public void Update(){
+        onUpdateClick(new ActionEvent());
+    }
+
 }

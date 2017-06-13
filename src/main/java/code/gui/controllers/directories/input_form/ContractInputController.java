@@ -1,38 +1,35 @@
 package code.gui.controllers.directories.input_form;
 
 import code.gui.controllers.IControllerInput;
+import code.gui.controllers.directories.ContractsController;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.ContractEntity;
 import code.hibernate.directories.CustomersEntity;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
 import java.sql.Date;
+import java.util.Optional;
 
 
 /**
  * Created by Алексей on 10.06.2017.
  */
 public class ContractInputController implements IControllerInput {
-
-
     @FXML private TextField nameContract;
     @FXML private DatePicker date;
 
     private Stage thisStage;
     private CustomersEntity selectedCustomer;
-
+    private ContractsController parentController;
 
     @Override
     public void onAddClick(ActionEvent event) {
 
-        try{
+        if(!nameContract.getText().equals("") && date!=null){
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
             ContractEntity contractEntity = new ContractEntity();
@@ -43,10 +40,18 @@ public class ContractInputController implements IControllerInput {
             session.getTransaction().commit();
             session.close();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Новый договор успешно добавлен");
-            alert.showAndWait();
+            alert.setTitle("OK!");
+            alert.setHeaderText(null);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                thisStage.close();
+                parentController.Update();
+            }
         }
-        catch (Exception e){
+        else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Не все параметры указаны");
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR!");
             alert.showAndWait();
         }
     }
@@ -62,5 +67,8 @@ public class ContractInputController implements IControllerInput {
     }
     public void setSelectedCustomer(CustomersEntity selectedCustomer) {
         this.selectedCustomer = selectedCustomer;
+    }
+    public void setParentController(ContractsController parent) {
+        this.parentController = parent;
     }
 }

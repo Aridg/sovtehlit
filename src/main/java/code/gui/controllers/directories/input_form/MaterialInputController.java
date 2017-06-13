@@ -1,6 +1,7 @@
 package code.gui.controllers.directories.input_form;
 
 import code.gui.controllers.IControllerInput;
+import code.gui.controllers.directories.MaterialsController;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.MaterialTypeEntity;
 import code.hibernate.directories.MaterialsEntity;
@@ -10,12 +11,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Asus on 11.06.2017.
@@ -26,7 +29,7 @@ public class MaterialInputController implements IControllerInput {
 
     private ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
     private Stage thisStage;
-
+    private MaterialsController parentController;
 
     @FXML
     private void initialize() {
@@ -41,7 +44,7 @@ public class MaterialInputController implements IControllerInput {
 
     @Override
     public void onAddClick(ActionEvent event) {
-        try{
+        if(!nameMaterial.getText().equals("") && materialTypes.getSelectionModel().getSelectedItem()!=null){
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
             MaterialsEntity materialEntity = new MaterialsEntity();
@@ -50,11 +53,19 @@ public class MaterialInputController implements IControllerInput {
             session.save(materialEntity);
             session.getTransaction().commit();
             session.close();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Новый договор успешно добавлен");
-            alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Новый материал успешно добавлен");
+            alert.setTitle("OK!");
+            alert.setHeaderText(null);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                thisStage.close();
+                parentController.Update();
+            }
         }
-        catch (Exception e){
+        else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Не все параметры указаны");
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR!");
             alert.showAndWait();
         }
     }
@@ -66,5 +77,9 @@ public class MaterialInputController implements IControllerInput {
 
     public void setThisStage(Stage thisStage) {
         this.thisStage = thisStage;
+    }
+
+    public void setParentController(MaterialsController parentController) {
+        this.parentController = parentController;
     }
 }
