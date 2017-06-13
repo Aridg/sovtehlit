@@ -19,7 +19,6 @@ public class ProductionEntity implements IModel {
     private int countInForm;
     private double weightForm;
 
-    private IntegerProperty idP = new SimpleIntegerProperty();
     private StringProperty dseP = new SimpleStringProperty();
     private StringProperty nameP = new SimpleStringProperty();
     private DoubleProperty netWeightP = new SimpleDoubleProperty();
@@ -35,7 +34,6 @@ public class ProductionEntity implements IModel {
 
     public void setId(int id) {
         this.id = id;
-        setIdP(id);
     }
 
     @Basic
@@ -137,19 +135,6 @@ public class ProductionEntity implements IModel {
         temp = Double.doubleToLongBits(weightForm);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
-    }
-
-    @Transient
-    public int getIdP() {
-        return idP.get();
-    }
-
-    public IntegerProperty idPProperty() {
-        return idP;
-    }
-
-    public void setIdP(int idP) {
-        this.idP.set(idP);
     }
 
     @Transient

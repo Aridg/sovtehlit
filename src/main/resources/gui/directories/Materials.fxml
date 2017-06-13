@@ -9,9 +9,8 @@
     <children>
         <TableView fx:id="materialVTable" prefHeight="400.0" prefWidth="500.0">
             <columns>
-                <TableColumn fx:id="idColumn" prefWidth="75.0" text="№" />
-                <TableColumn fx:id="nameColumn" prefWidth="277.0" text="Наименование" />
-                <TableColumn fx:id="typeMaterialColumn" prefWidth="147.0" text="Тип материала" />
+                <TableColumn fx:id="nameColumn" prefWidth="250.0" text="Наименование" />
+                <TableColumn fx:id="typeMaterialColumn" prefWidth="250.0" text="Тип материала" />
             </columns>
         </TableView>
         <Button layoutX="540.0" layoutY="88.0" mnemonicParsing="false" onAction="#onUpdateClick" prefHeight="25.0" prefWidth="25.0" style="-fx-background-image: url('icons/refresh.png');" />

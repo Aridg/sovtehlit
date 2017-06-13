@@ -33,7 +33,7 @@ public class ContractInputController implements IControllerInput {
     @Override
     public void onAddClick(ActionEvent event) {
 
-        if(!nameContract.getText().equals("") && date!=null){
+        if(!nameContract.getText().equals("") && date.getValue()!=null){
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
             ContractEntity contractEntity = new ContractEntity();
@@ -84,7 +84,7 @@ public class ContractInputController implements IControllerInput {
         }
     }
 
-    public void chanhgeForm(){
+    private void chanhgeForm(){
         nameContract.setText(selectContract.getName());
         date.setValue(selectContract.getDateP());
         buttonOne.setText("Изменить");
@@ -103,9 +103,11 @@ public class ContractInputController implements IControllerInput {
         this.selectedCustomer = selectedCustomer;
     }
     public void setParentController(ContractsController parent) {
+
         this.parentController = parent;
     }
     public void setSelectContract(ContractEntity selectContract) {
         this.selectContract = selectContract;
+        chanhgeForm();
     }
 }

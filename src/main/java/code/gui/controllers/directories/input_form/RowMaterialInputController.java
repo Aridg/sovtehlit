@@ -78,7 +78,7 @@ public class RowMaterialInputController implements IControllerInput {
 
     }
 
-    public void chanhgeForm(){
+    private void chanhgeForm(){
         nameRawMaterial.setText(selectRowMaterial.getName());
         buttonOne.setText("Изменить");
         buttonOne.setOnAction(new EventHandler<ActionEvent>() {
@@ -95,8 +95,8 @@ public class RowMaterialInputController implements IControllerInput {
     public void setParentController(RowMaterialController parentController) {
         this.parentController = parentController;
     }
-
     public void setSelectRowMaterial(RowMaterialEntity selectRowMaterial) {
         this.selectRowMaterial = selectRowMaterial;
+        chanhgeForm();
     }
 }

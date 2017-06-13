@@ -9,8 +9,7 @@
     <children>
         <TableView fx:id="materialTypeTable" prefHeight="400.0" prefWidth="500.0">
             <columns>
-                <TableColumn fx:id="idColumn" prefWidth="75.0" text="№" />
-                <TableColumn fx:id="nameColumn" prefWidth="424.0" text="Наименование" />
+                <TableColumn fx:id="nameColumn" prefWidth="500.0" text="Наименование" />
             </columns>
         </TableView>
         <Button layoutX="540.0" layoutY="84.0" mnemonicParsing="false" onAction="#onUpdateClick" prefHeight="25.0" prefWidth="25.0" style="-fx-background-image: url('icons/refresh.png');" />

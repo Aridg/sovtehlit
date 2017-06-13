@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import org.hibernate.Session;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Asus on 11.06.2017.
@@ -25,10 +27,9 @@ public class UnitInputController implements IControllerInput {
     private UnitMeasurementController parentController;
     private UnitsEntity selectUnit;
 
-
     @Override
     public void onAddClick(ActionEvent event) {
-        if(!nameUnit.getText().equals("") && !factor.getText().equals("")){
+        if(!nameUnit.getText().equals("") && isDouble(factor.getText())){
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
             UnitsEntity unitEntity = new UnitsEntity();
@@ -78,8 +79,16 @@ public class UnitInputController implements IControllerInput {
         }
     }
 
+    private boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
 
-    public void chanhgeForm(){
+    private void chanhgeForm(){
         nameUnit.setText(selectUnit.getName());
         factor.setText(String.valueOf(selectUnit.getCoefficient()));
         buttonOne.setText("Изменить");
@@ -98,8 +107,9 @@ public class UnitInputController implements IControllerInput {
     public void setParentController(UnitMeasurementController parentController) {
         this.parentController = parentController;
     }
-
     public void setSelectUnit(UnitsEntity selectUnit) {
+
         this.selectUnit = selectUnit;
+        chanhgeForm();
     }
 }

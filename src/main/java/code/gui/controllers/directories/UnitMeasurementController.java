@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -30,14 +31,11 @@ public class UnitMeasurementController extends IDirectoryController {
     @FXML
     private TableView<UnitsEntity> unitsTable;
     @FXML
-    private TableColumn<UnitsEntity, Integer> idColumn;
-    @FXML
     private TableColumn<UnitsEntity, String> nameColumn;
     @FXML
     private TableColumn<UnitsEntity, Double> factorColumn;
 
     private ObservableList<UnitsEntity> unitsModels = FXCollections.observableArrayList();
-    private Stage stage = new Stage(StageStyle.UTILITY);
 
     public UnitMeasurementController() {
         Session session = HibernateSessionFactory.getSession();
@@ -49,7 +47,6 @@ public class UnitMeasurementController extends IDirectoryController {
 
     @FXML
     public void initialize() {
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         factorColumn.setCellValueFactory(cellData -> cellData.getValue().coefficientPProperty().asObject()); // везде, кроме String полей нужно использовать .asObject()
         unitsTable.setItems(unitsModels);
@@ -58,10 +55,11 @@ public class UnitMeasurementController extends IDirectoryController {
 
     @Override
     protected void onAddClick(ActionEvent event) {
-
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, UnitInputController> form  = new GuiForm<AnchorPane, UnitInputController>(MenuType.UNITS_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(unitsTable.getScene().getWindow());
         stage.setTitle("Добавление единицы измерения");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -76,7 +74,7 @@ public class UnitMeasurementController extends IDirectoryController {
 
         int selectedIndex = unitsTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex < 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
             alert.showAndWait();
             return;
         }
@@ -87,16 +85,17 @@ public class UnitMeasurementController extends IDirectoryController {
                 .getSingleResult();
         session.close();
 
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, UnitInputController> form  = new GuiForm<AnchorPane, UnitInputController>(MenuType.UNITS_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(unitsTable.getScene().getWindow());
         stage.setTitle("Изменение едениц измерения");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
         form.getController().setParentController(this);
         form.getController().setSelectUnit(elem);
-        form.getController().chanhgeForm();
         stage.showAndWait();
     }
 
@@ -139,6 +138,10 @@ public class UnitMeasurementController extends IDirectoryController {
     }
 
     public void Update(){
-        onUpdateClick(null);
+        unitsModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        unitsModels.addAll(session.createQuery("from UnitsEntity ", UnitsEntity.class)
+                .getResultList());
+        session.close();
     }
 }

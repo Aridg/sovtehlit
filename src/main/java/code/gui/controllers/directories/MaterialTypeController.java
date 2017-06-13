@@ -16,6 +16,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -27,11 +28,9 @@ import java.util.Optional;
  */
 public class MaterialTypeController extends IDirectoryController{
     @FXML private TableView<MaterialTypeEntity> materialTypeTable;
-    @FXML private TableColumn<MaterialTypeEntity, Integer> idColumn;
     @FXML private TableColumn<MaterialTypeEntity, String> nameColumn;
 
     private ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
-    private Stage stage = new Stage(StageStyle.UTILITY);
 
     public MaterialTypeController() {
         Session session = HibernateSessionFactory.getSession();
@@ -42,7 +41,6 @@ public class MaterialTypeController extends IDirectoryController{
 
     @FXML
     public void initialize() {
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         materialTypeTable.setItems(materialTypeModels);
         materialTypeTable.setColumnResizePolicy(param -> false);
@@ -50,10 +48,11 @@ public class MaterialTypeController extends IDirectoryController{
 
     @Override
     protected void onAddClick(ActionEvent event) {
-
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, MaterialTypeInputController> form  = new GuiForm<AnchorPane, MaterialTypeInputController>(MenuType.MATERIAL_TYPE_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(materialTypeTable.getScene().getWindow());
         stage.setTitle("Добавление типа материала");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -65,10 +64,9 @@ public class MaterialTypeController extends IDirectoryController{
 
     @Override
     protected void onEditClick(ActionEvent event) {
-
         int selectedIndex = materialTypeTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex < 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
             alert.showAndWait();
             return;
         }
@@ -79,16 +77,17 @@ public class MaterialTypeController extends IDirectoryController{
                 .getSingleResult();
         session.close();
 
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, MaterialTypeInputController> form  = new GuiForm<AnchorPane, MaterialTypeInputController>(MenuType.MATERIAL_TYPE_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
-        stage.setTitle("Изменение типа матреиала");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(materialTypeTable.getScene().getWindow());
+        stage.setTitle("Изменение типа материала");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
         form.getController().setParentController(this);
         form.getController().setSelectMaterialType(elem);
-        form.getController().chanhgeForm();
         stage.showAndWait();
     }
 
@@ -130,7 +129,11 @@ public class MaterialTypeController extends IDirectoryController{
         alert.showAndWait();
     }
     public void Update(){
-        onUpdateClick(null);
+        materialTypeModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        materialTypeModels.addAll(session.createQuery("from MaterialTypeEntity ", MaterialTypeEntity.class)
+                .getResultList());
+        session.close();
     }
 
 }

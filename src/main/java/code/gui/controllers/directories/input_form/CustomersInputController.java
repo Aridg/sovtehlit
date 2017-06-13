@@ -82,7 +82,7 @@ public class CustomersInputController implements IControllerInput {
         }
     }
 
-    public void chanhgeForm(){
+    private void chanhgeForm(){
         nameCustomer.setText(selectCutomer.getName());
         buttonOne.setText("Изменить");
         buttonOne.setOnAction(new EventHandler<ActionEvent>() {
@@ -100,6 +100,8 @@ public class CustomersInputController implements IControllerInput {
         this.parentController = parentController;
     }
     public void setSelectCutomer(CustomersEntity selectCutomer) {
+
         this.selectCutomer = selectCutomer;
+        chanhgeForm();
     }
 }

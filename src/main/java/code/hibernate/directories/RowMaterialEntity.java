@@ -17,7 +17,6 @@ public class RowMaterialEntity implements IModel{
     private int id;
     private String name;
 
-    private final IntegerProperty idP = new SimpleIntegerProperty();
     private final StringProperty nameP = new SimpleStringProperty();
 
     @Id
@@ -28,7 +27,6 @@ public class RowMaterialEntity implements IModel{
 
     public void setId(int id) {
         this.id = id;
-        setIdP(id);
     }
 
     @Basic
@@ -60,19 +58,6 @@ public class RowMaterialEntity implements IModel{
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    @Transient
-    public int getIdP() {
-        return idP.get();
-    }
-
-    public IntegerProperty idPProperty() {
-        return idP;
-    }
-
-    public void setIdP(int idP) {
-        this.idP.set(idP);
     }
 
     @Transient

@@ -18,7 +18,6 @@ public class ContractEntity implements IModel {
     private Date date;
     private int customerId;
 
-    private IntegerProperty idP = new SimpleIntegerProperty();
     private StringProperty nameP = new SimpleStringProperty();
     private ObjectProperty<LocalDate> dateP = new SimpleObjectProperty<>();
 
@@ -30,7 +29,6 @@ public class ContractEntity implements IModel {
 
     public void setId(int id) {
         this.id = id;
-        setIdP(id);
     }
 
     @Basic
@@ -86,19 +84,6 @@ public class ContractEntity implements IModel {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + customerId;
         return result;
-    }
-
-    @Transient
-    public int getIdP() {
-        return idP.get();
-    }
-
-    public IntegerProperty idPProperty() {
-        return idP;
-    }
-
-    public void setIdP(int idP) {
-        this.idP.set(idP);
     }
 
     @Transient
