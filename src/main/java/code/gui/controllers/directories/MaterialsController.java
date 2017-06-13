@@ -20,6 +20,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -31,11 +32,9 @@ import java.util.Optional;
  */
 public class MaterialsController extends IDirectoryController{
     @FXML private TableView<MaterialVEntity> materialVTable;
-    @FXML private TableColumn<MaterialVEntity, Integer> idColumn;
     @FXML private TableColumn<MaterialVEntity, String> nameColumn;
     @FXML private TableColumn<MaterialVEntity, String> typeMaterialColumn;
 
-    private Stage stage = new Stage(StageStyle.UTILITY);
     private ObservableList<MaterialVEntity> data = FXCollections.observableArrayList();
 
     @FXML
@@ -49,10 +48,11 @@ public class MaterialsController extends IDirectoryController{
 
     @Override
     protected void onAddClick(ActionEvent event) {
-
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, MaterialInputController> form  = new GuiForm<AnchorPane, MaterialInputController>(MenuType.MATERIAL_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(materialVTable.getScene().getWindow());
         stage.setTitle("Добавление материла");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -65,7 +65,7 @@ public class MaterialsController extends IDirectoryController{
     protected void onEditClick(ActionEvent event) {
         int selectedIndex = materialVTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex < 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
             alert.showAndWait();
             return;
         }
@@ -76,16 +76,17 @@ public class MaterialsController extends IDirectoryController{
                 .getSingleResult();
         session.close();
 
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, MaterialInputController> form  = new GuiForm<AnchorPane, MaterialInputController>(MenuType.MATERIAL_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(materialVTable.getScene().getWindow());
         stage.setTitle("Изменение информации об материале");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
         form.getController().setParentController(this);
         form.getController().setSelectMaterial(elem);
-        form.getController().chanhgeForm();
         stage.showAndWait();
     }
 
@@ -129,11 +130,14 @@ public class MaterialsController extends IDirectoryController{
     }
 
     public void Update() {
-        onUpdateClick(null);
+        data.clear();
+        Session session = HibernateSessionFactory.getSession();
+        data.addAll(session.createQuery("from MaterialVEntity ", MaterialVEntity.class)
+                .getResultList());
+        session.close();
     }
 
     private void tableConfiguration(){
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         typeMaterialColumn.setCellValueFactory(cellData -> cellData.getValue().typePProperty());
         materialVTable.setItems(data);

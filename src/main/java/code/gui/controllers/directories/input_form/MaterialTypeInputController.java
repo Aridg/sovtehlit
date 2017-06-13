@@ -80,7 +80,7 @@ public class MaterialTypeInputController implements IControllerInput {
         }
     }
 
-    public void chanhgeForm(){
+    private void chanhgeForm(){
         nameMaterialType.setText(selectMaterialType.getName());
         buttonOne.setText("Изменить");
         buttonOne.setOnAction(new EventHandler<ActionEvent>() {
@@ -99,5 +99,6 @@ public class MaterialTypeInputController implements IControllerInput {
     }
     public void setSelectMaterialType(MaterialTypeEntity selectMaterialType) {
         this.selectMaterialType = selectMaterialType;
+        chanhgeForm();
     }
 }

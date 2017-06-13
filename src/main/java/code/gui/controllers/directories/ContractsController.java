@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -29,18 +30,15 @@ import java.util.Optional;
 public class ContractsController extends IDirectoryController{
     @FXML private TableColumn<ContractEntity, LocalDate> dateColumn;
     @FXML private TableView<ContractEntity> contractTable;
-    @FXML private TableColumn<ContractEntity, Integer> idColumn;
     @FXML private TableColumn<ContractEntity, String> nameColumn;
     @FXML private ComboBox<CustomersEntity> customers;
 
-    private Stage stage = new Stage(StageStyle.UTILITY);
     private ObservableList<ContractEntity> contractModels = FXCollections.observableArrayList();
     private ObservableList<CustomersEntity> dataCustomers = FXCollections.observableArrayList();
 
 
     @FXML
     private void initialize() {
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().datePProperty());
         contractTable.setItems(contractModels);
@@ -50,10 +48,11 @@ public class ContractsController extends IDirectoryController{
 
     @Override
     protected void onAddClick(ActionEvent event) {
-
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, ContractInputController> form  = new GuiForm<>(MenuType.CONTRACT_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(contractTable.getScene().getWindow());
         stage.setTitle("Добавление контракта");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -79,16 +78,17 @@ public class ContractsController extends IDirectoryController{
                 .getSingleResult();
         session.close();
 
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, ContractInputController> form  = new GuiForm<>(MenuType.CONTRACT_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(contractTable.getScene().getWindow());
         stage.setTitle("Изменение договора");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
         form.getController().setParentController(this);
         form.getController().setSelectContract(elem);
-        form.getController().chanhgeForm();
         stage.showAndWait();
     }
 
@@ -101,7 +101,7 @@ public class ContractsController extends IDirectoryController{
         if(result.get() == ButtonType.OK) {
             int selectedIndex = contractTable.getSelectionModel().getSelectedIndex();
             if (selectedIndex < 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
                 alert.showAndWait();
                 return;
             }
@@ -132,7 +132,12 @@ public class ContractsController extends IDirectoryController{
     }
 
     public void Update() {
-        onUpdateClick(null);
+        contractModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        contractModels.addAll(session.createQuery("from ContractEntity where customerId = :customer", ContractEntity.class)
+                .setParameter("customer", customers.getSelectionModel().getSelectedItem().getId())
+                .getResultList());
+        session.close();
     }
 
     private void getCustomers()

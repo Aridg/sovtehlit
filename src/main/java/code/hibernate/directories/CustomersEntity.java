@@ -17,7 +17,6 @@ public class CustomersEntity implements IModel {
     private int id;
     private String name;
 
-    private final IntegerProperty idP = new SimpleIntegerProperty();
     private final StringProperty nameP = new SimpleStringProperty();
 
     @Id
@@ -28,7 +27,6 @@ public class CustomersEntity implements IModel {
 
     public void setId(int id) {
         this.id = id;
-        setIdP(id);
     }
 
     @Basic
@@ -65,19 +63,6 @@ public class CustomersEntity implements IModel {
     @Override
     public String toString() {
         return name;
-    }
-
-    @Transient
-    public int getIdP() {
-        return idP.get();
-    }
-
-    public IntegerProperty idPProperty() {
-        return idP;
-    }
-
-    public void setIdP(int idP) {
-        this.idP.set(idP);
     }
 
     @Transient

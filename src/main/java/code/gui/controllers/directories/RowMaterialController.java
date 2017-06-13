@@ -16,6 +16,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -30,12 +31,9 @@ public class RowMaterialController extends IDirectoryController {
     @FXML
     private TableView<RowMaterialEntity> rowMaterialTable;
     @FXML
-    private TableColumn<RowMaterialEntity, Integer> idColumn;
-    @FXML
     private TableColumn<RowMaterialEntity, String> nameColumn;
 
     private ObservableList<RowMaterialEntity> rowMaterialModels = FXCollections.observableArrayList();
-    private Stage stage = new Stage (StageStyle.UTILITY);
 
     public RowMaterialController() {
         Session session = HibernateSessionFactory.getSession();
@@ -46,7 +44,6 @@ public class RowMaterialController extends IDirectoryController {
 
     @FXML
     public void initialize() {
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         rowMaterialTable.setItems(rowMaterialModels);
         rowMaterialTable.setColumnResizePolicy(param -> false);
@@ -55,10 +52,9 @@ public class RowMaterialController extends IDirectoryController {
 
     @Override
     protected void onAddClick(ActionEvent event) {
-
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, RowMaterialInputController> form  = new GuiForm<AnchorPane, RowMaterialInputController>(MenuType.RAW_MATERIAL_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
         stage.setTitle("Добавление сырья");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -70,10 +66,9 @@ public class RowMaterialController extends IDirectoryController {
 
     @Override
     protected void onEditClick(ActionEvent event) {
-
         int selectedIndex = rowMaterialTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex < 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
             alert.showAndWait();
             return;
         }
@@ -84,16 +79,15 @@ public class RowMaterialController extends IDirectoryController {
                 .getSingleResult();
         session.close();
 
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, RowMaterialInputController> form  = new GuiForm<AnchorPane, RowMaterialInputController>(MenuType.RAW_MATERIAL_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
         stage.setTitle("Изменение сырья");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
         form.getController().setParentController(this);
         form.getController().setSelectRowMaterial(elem);
-        form.getController().chanhgeForm();
         stage.showAndWait();
     }
 
@@ -136,6 +130,10 @@ public class RowMaterialController extends IDirectoryController {
     }
 
     public void Update(){
-        onUpdateClick(null);
+        rowMaterialModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        rowMaterialModels.addAll(session.createQuery("from RowMaterialEntity ", RowMaterialEntity.class)
+                .getResultList());
+        session.close();
     }
 }

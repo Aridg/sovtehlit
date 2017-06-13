@@ -15,7 +15,6 @@ public class UnitsEntity implements IModel {
     private String name;
     private double coefficient;
 
-    private IntegerProperty idP = new SimpleIntegerProperty();
     private StringProperty nameP = new SimpleStringProperty();
     private DoubleProperty coefficientP = new SimpleDoubleProperty();
 
@@ -27,7 +26,6 @@ public class UnitsEntity implements IModel {
 
     public void setId(int id) {
         this.id = id;
-        setIdP(id);
     }
 
     @Basic
@@ -75,19 +73,6 @@ public class UnitsEntity implements IModel {
         temp = Double.doubleToLongBits(coefficient);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
-    }
-
-    @Transient
-    public int getIdP() {
-        return idP.get();
-    }
-
-    public IntegerProperty idPProperty() {
-        return idP;
-    }
-
-    public void setIdP(int idP) {
-        this.idP.set(idP);
     }
 
     @Transient

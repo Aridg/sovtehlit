@@ -7,10 +7,9 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.CustomersController">
    <children>
-      <TableView fx:id="customersTable" prefHeight="404.0" prefWidth="506.0">
+      <TableView fx:id="customersTable" prefHeight="400.0" prefWidth="505.0">
         <columns>
-          <TableColumn fx:id="idColumn" prefWidth="75.0" text="№" />
-          <TableColumn fx:id="nameColumn" prefWidth="424.0" text="Наименование" />
+          <TableColumn fx:id="nameColumn" prefWidth="505.0" text="Наименование" />
         </columns>
       </TableView>
       <Button layoutX="540.0" layoutY="91.0" mnemonicParsing="false" onAction="#onUpdateClick" prefHeight="25.0" prefWidth="25.0" style="-fx-background-image: url('icons/refresh.png');" />

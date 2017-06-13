@@ -18,6 +18,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -27,11 +28,8 @@ import java.util.Optional;
 
 public class CustomersController extends IDirectoryController {
     @FXML private TableView<CustomersEntity> customersTable;
-    @FXML private TableColumn<CustomersEntity, Integer> idColumn;
     @FXML private TableColumn<CustomersEntity, String> nameColumn;
 
-
-    private Stage stage = new Stage(StageStyle.UTILITY);
     private ObservableList<CustomersEntity> customerModels = FXCollections.observableArrayList();
 
     public CustomersController() {
@@ -43,7 +41,6 @@ public class CustomersController extends IDirectoryController {
 
     @FXML
     public void initialize() {
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         customersTable.setItems(customerModels);
         customersTable.setColumnResizePolicy(param -> false);
@@ -52,10 +49,11 @@ public class CustomersController extends IDirectoryController {
 
     @Override
     protected void onAddClick(ActionEvent event) {
-
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, CustomersInputController> form  = new GuiForm<AnchorPane, CustomersInputController>(MenuType.COSTOMER_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(customersTable.getScene().getWindow());
         stage.setTitle("Добавление заказчика");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
@@ -70,7 +68,7 @@ public class CustomersController extends IDirectoryController {
 
         int selectedIndex = customersTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex < 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
             alert.showAndWait();
             return;
         }
@@ -81,18 +79,18 @@ public class CustomersController extends IDirectoryController {
                 .getSingleResult();
         session.close();
 
+        Stage stage = new Stage (StageStyle.UTILITY);
         GuiForm<AnchorPane, CustomersInputController> form  = new GuiForm<AnchorPane, CustomersInputController>(MenuType.COSTOMER_INPUT.getFilePath());
         AnchorPane pane = form.getParent();
-
-        stage.setTitle("Изменение информации о заказчики");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(customersTable.getScene().getWindow());
+        stage.setTitle("Изменение информации о заказчике");
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         form.getController().setThisStage(stage);
         form.getController().setParentController(this);
         form.getController().setSelectCutomer(elem);
-        form.getController().chanhgeForm();
         stage.showAndWait();
-
     }
 
     @Override
@@ -134,6 +132,10 @@ public class CustomersController extends IDirectoryController {
     }
 
     public void Update() {
-        onUpdateClick(null);
+        customerModels.clear();
+        Session session = HibernateSessionFactory.getSession();
+        customerModels.addAll(session.createQuery("from CustomersEntity ", CustomersEntity.class)
+                .getResultList());
+        session.close();
     }
 }

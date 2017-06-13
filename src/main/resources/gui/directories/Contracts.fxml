@@ -9,11 +9,10 @@
 
 <AnchorPane prefHeight="532.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.ContractsController">
     <children>
-        <TableView fx:id="contractTable" layoutX="14.0" layoutY="130.0" prefHeight="404.0" prefWidth="500.0">
+        <TableView fx:id="contractTable" layoutX="14.0" layoutY="130.0" prefHeight="400.0" prefWidth="500.0">
             <columns>
-                <TableColumn fx:id="idColumn" prefWidth="75.0" text="№" />
-                <TableColumn fx:id="nameColumn" prefWidth="269.0" text="Наименование" />
-            <TableColumn fx:id="dateColumn" prefWidth="155.0" text="Дата" />
+                <TableColumn fx:id="nameColumn" prefWidth="250.0" text="Наименование" />
+            <TableColumn fx:id="dateColumn" prefWidth="250.0" text="Дата" />
             </columns>
         </TableView>
         <Button layoutX="526.0" layoutY="274.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />

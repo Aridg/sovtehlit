@@ -18,7 +18,6 @@ public class MaterialVEntity implements IModel{
     private String name;
     private String type;
 
-    private IntegerProperty idP = new SimpleIntegerProperty();
     private StringProperty nameP = new SimpleStringProperty();
     private StringProperty typeP = new SimpleStringProperty();
 
@@ -30,7 +29,6 @@ public class MaterialVEntity implements IModel{
 
     public void setId(int id) {
         this.id = id;
-        setIdP(id);
     }
 
     @Basic
@@ -77,18 +75,6 @@ public class MaterialVEntity implements IModel{
         return result;
     }
 
-    @Transient
-    public int getIdP() {
-        return idP.get();
-    }
-
-    public IntegerProperty idPProperty() {
-        return idP;
-    }
-
-    public void setIdP(int idP) {
-        this.idP.set(idP);
-    }
 
     @Transient
     public String getNameP() {

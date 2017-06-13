@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,10 +9,10 @@
 <AnchorPane prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.gui.controllers.directories.input_form.MaterialInputController">
    <children>
       <TextField fx:id="nameMaterial" layoutX="14.0" layoutY="50.0" />
-      <ChoiceBox fx:id="materialTypes" layoutX="286.0" layoutY="50.0" prefWidth="150.0" />
       <Label layoutX="47.0" layoutY="34.0" text="Наименование" />
       <Label layoutX="320.0" layoutY="34.0" text="Тип материала" />
       <Button fx:id="buttonOne" layoutX="129.0" layoutY="102.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
       <Button layoutX="251.0" layoutY="102.0" mnemonicParsing="false" onAction="#onAnnulmentClick" text="Отменить" />
+      <ComboBox fx:id="materialTypes" layoutX="286.0" layoutY="50.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

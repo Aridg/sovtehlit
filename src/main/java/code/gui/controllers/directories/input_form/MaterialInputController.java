@@ -24,7 +24,7 @@ import java.util.Optional;
 public class MaterialInputController implements IControllerInput {
     @FXML private Button buttonOne;
     @FXML private TextField nameMaterial;
-    @FXML private ChoiceBox<MaterialTypeEntity> materialTypes;
+    @FXML private ComboBox<MaterialTypeEntity> materialTypes;
 
     private ObservableList<MaterialTypeEntity> materialTypeModels = FXCollections.observableArrayList();
     private Stage thisStage;
@@ -95,7 +95,7 @@ public class MaterialInputController implements IControllerInput {
         }
     }
 
-    public void chanhgeForm(){
+    private void chanhgeForm(){
         Session session = HibernateSessionFactory.getSession();
         MaterialTypeEntity current =  session.createQuery("from MaterialTypeEntity where id=:id",MaterialTypeEntity.class).setParameter("id",selectMaterial.getType()).getSingleResult();
         nameMaterial.setText(selectMaterial.getName());
@@ -115,8 +115,9 @@ public class MaterialInputController implements IControllerInput {
     public void setParentController(MaterialsController parentController) {
         this.parentController = parentController;
     }
-
     public void setSelectMaterial(MaterialsEntity selectMaterial) {
+
         this.selectMaterial = selectMaterial;
+        chanhgeForm();
     }
 }
