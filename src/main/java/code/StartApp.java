@@ -10,7 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 
 public class StartApp extends Application {
@@ -59,9 +58,6 @@ public class StartApp extends Application {
 
     private void configPrimary(Stage primaryStage) {
         primaryStage.setTitle("Управление производством");
-        primaryStage.initStyle(StageStyle.UTILITY);
-        primaryStage.setOnCloseRequest(event -> {
-            closeApp();
-        });
+        primaryStage.setOnCloseRequest(event -> closeApp());
     }
 }
