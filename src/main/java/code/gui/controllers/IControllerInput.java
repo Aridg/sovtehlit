@@ -11,4 +11,6 @@ public interface IControllerInput extends IController {
     void onAddClick(ActionEvent event);
     @FXML
     void onAnnulmentClick(ActionEvent event);
+    @FXML
+    void onEditClick(ActionEvent event);
 }

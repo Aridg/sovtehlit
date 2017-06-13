@@ -74,6 +74,30 @@ public class UnitMeasurementController extends IDirectoryController {
     @Override
     protected void onEditClick(ActionEvent event) {
 
+        int selectedIndex = unitsTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        UnitsEntity elem = session.createQuery("from UnitsEntity where id = :id", UnitsEntity.class)
+                .setParameter("id", unitsTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.close();
+
+        GuiForm<AnchorPane, UnitInputController> form  = new GuiForm<AnchorPane, UnitInputController>(MenuType.UNITS_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Изменение едениц измерения");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
+        form.getController().setSelectUnit(elem);
+        form.getController().chanhgeForm();
+        stage.showAndWait();
     }
 
     @Override
@@ -113,7 +137,8 @@ public class UnitMeasurementController extends IDirectoryController {
         alert.setHeaderText(null);
         alert.showAndWait();
     }
+
     public void Update(){
-        onUpdateClick(new ActionEvent());
+        onUpdateClick(null);
     }
 }

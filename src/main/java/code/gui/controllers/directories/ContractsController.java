@@ -4,7 +4,6 @@ import code.accessoory.GuiForm;
 import code.accessoory.MenuType;
 import code.gui.controllers.IDirectoryController;
 import code.gui.controllers.directories.input_form.ContractInputController;
-import code.gui.controllers.directories.input_form.CustomersInputController;
 import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.ContractEntity;
 import code.hibernate.directories.CustomersEntity;
@@ -29,7 +28,7 @@ import java.util.Optional;
  */
 public class ContractsController extends IDirectoryController{
     @FXML private TableColumn<ContractEntity, LocalDate> dateColumn;
-    @FXML private TableView<ContractEntity> customersTable;
+    @FXML private TableView<ContractEntity> contractTable;
     @FXML private TableColumn<ContractEntity, Integer> idColumn;
     @FXML private TableColumn<ContractEntity, String> nameColumn;
     @FXML private ComboBox<CustomersEntity> customers;
@@ -44,9 +43,9 @@ public class ContractsController extends IDirectoryController{
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idPProperty().asObject());
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().namePProperty());
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().datePProperty());
-        customersTable.setItems(contractModels);
+        contractTable.setItems(contractModels);
         getCustomers();
-        customersTable.setColumnResizePolicy(param -> false);
+        contractTable.setColumnResizePolicy(param -> false);
     }
 
     @Override
@@ -67,6 +66,30 @@ public class ContractsController extends IDirectoryController{
     @Override
     protected void onEditClick(ActionEvent event) {
 
+        int selectedIndex = contractTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для изменения");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        ContractEntity elem = session.createQuery("from ContractEntity where id = :id", ContractEntity.class)
+                .setParameter("id", contractTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.close();
+
+        GuiForm<AnchorPane, ContractInputController> form  = new GuiForm<>(MenuType.CONTRACT_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Изменение договора");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
+        form.getController().setSelectContract(elem);
+        form.getController().chanhgeForm();
+        stage.showAndWait();
     }
 
     @Override
@@ -76,7 +99,7 @@ public class ContractsController extends IDirectoryController{
         alertApproval.setHeaderText(null);
         Optional<ButtonType> result = alertApproval.showAndWait();
         if(result.get() == ButtonType.OK) {
-            int selectedIndex = customersTable.getSelectionModel().getSelectedIndex();
+            int selectedIndex = contractTable.getSelectionModel().getSelectedIndex();
             if (selectedIndex < 0) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
                 alert.showAndWait();
@@ -85,11 +108,11 @@ public class ContractsController extends IDirectoryController{
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
             ContractEntity elem = session.createQuery("from ContractEntity where id = :id", ContractEntity.class)
-                    .setParameter("id", customersTable.getSelectionModel().getSelectedItem().getId())
+                    .setParameter("id", contractTable.getSelectionModel().getSelectedItem().getId())
                     .getSingleResult();
             session.delete(elem);
             session.getTransaction().commit();
-            customersTable.getItems().remove(customersTable.getSelectionModel().getSelectedItem());
+            contractTable.getItems().remove(contractTable.getSelectionModel().getSelectedItem());
             session.close();
         }
     }
@@ -109,7 +132,7 @@ public class ContractsController extends IDirectoryController{
     }
 
     public void Update() {
-        onUpdateClick(new ActionEvent());
+        onUpdateClick(null);
     }
 
     private void getCustomers()

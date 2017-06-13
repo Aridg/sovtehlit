@@ -68,6 +68,31 @@ public class CustomersController extends IDirectoryController {
     @Override
     protected void onEditClick(ActionEvent event) {
 
+        int selectedIndex = customersTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        CustomersEntity elem = session.createQuery("from CustomersEntity where id = :id", CustomersEntity.class)
+                .setParameter("id", customersTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.close();
+
+        GuiForm<AnchorPane, CustomersInputController> form  = new GuiForm<AnchorPane, CustomersInputController>(MenuType.COSTOMER_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Изменение информации о заказчики");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
+        form.getController().setSelectCutomer(elem);
+        form.getController().chanhgeForm();
+        stage.showAndWait();
+
     }
 
     @Override
@@ -109,6 +134,6 @@ public class CustomersController extends IDirectoryController {
     }
 
     public void Update() {
-        onUpdateClick(new ActionEvent());
+        onUpdateClick(null);
     }
 }

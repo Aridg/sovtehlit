@@ -71,6 +71,30 @@ public class RowMaterialController extends IDirectoryController {
     @Override
     protected void onEditClick(ActionEvent event) {
 
+        int selectedIndex = rowMaterialTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        RowMaterialEntity elem = session.createQuery("from RowMaterialEntity where id = :id", RowMaterialEntity.class)
+                .setParameter("id", rowMaterialTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.close();
+
+        GuiForm<AnchorPane, RowMaterialInputController> form  = new GuiForm<AnchorPane, RowMaterialInputController>(MenuType.RAW_MATERIAL_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Изменение сырья");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
+        form.getController().setSelectRowMaterial(elem);
+        form.getController().chanhgeForm();
+        stage.showAndWait();
     }
 
     @Override
@@ -88,7 +112,7 @@ public class RowMaterialController extends IDirectoryController {
             }
             Session session = HibernateSessionFactory.getSession();
             session.beginTransaction();
-            RowMaterialEntity elem = session.createQuery("from MaterialTypeEntity where id = :id", RowMaterialEntity.class)
+            RowMaterialEntity elem = session.createQuery("from RowMaterialEntity where id = :id", RowMaterialEntity.class)
                     .setParameter("id", rowMaterialTable.getSelectionModel().getSelectedItem().getId())
                     .getSingleResult();
             session.delete(elem);
@@ -112,6 +136,6 @@ public class RowMaterialController extends IDirectoryController {
     }
 
     public void Update(){
-        onUpdateClick(new ActionEvent());
+        onUpdateClick(null);
     }
 }

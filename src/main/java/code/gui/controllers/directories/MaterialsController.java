@@ -63,7 +63,30 @@ public class MaterialsController extends IDirectoryController{
 
     @Override
     protected void onEditClick(ActionEvent event) {
+        int selectedIndex = materialVTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        MaterialsEntity elem = session.createQuery("from MaterialsEntity where id = :id", MaterialsEntity.class)
+                .setParameter("id", materialVTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.close();
 
+        GuiForm<AnchorPane, MaterialInputController> form  = new GuiForm<AnchorPane, MaterialInputController>(MenuType.MATERIAL_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Изменение информации об материале");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
+        form.getController().setSelectMaterial(elem);
+        form.getController().chanhgeForm();
+        stage.showAndWait();
     }
 
     @Override
@@ -106,7 +129,7 @@ public class MaterialsController extends IDirectoryController{
     }
 
     public void Update() {
-        onUpdateClick(new ActionEvent());
+        onUpdateClick(null);
     }
 
     private void tableConfiguration(){

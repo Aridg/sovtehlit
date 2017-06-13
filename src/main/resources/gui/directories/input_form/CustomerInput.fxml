@@ -9,7 +9,7 @@
    <children>
       <TextField fx:id="nameCustomer" layoutX="63.0" layoutY="63.0" prefHeight="25.0" prefWidth="334.0" />
       <Label layoutX="184.0" layoutY="42.0" text="Наименование" />
-      <Button layoutX="63.0" layoutY="94.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
+      <Button fx:id="buttonOne" layoutX="63.0" layoutY="94.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
       <Button layoutX="328.0" layoutY="94.0" mnemonicParsing="false" onAction="#onAnnulmentClick" prefHeight="25.0" prefWidth="69.0" text="Отмена" />
    </children>
 </AnchorPane>

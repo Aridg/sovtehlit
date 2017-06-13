@@ -12,7 +12,7 @@
       <Label layoutX="47.0" layoutY="27.0" text="Наименование" />
       <DatePicker fx:id="date" layoutX="262.0" layoutY="40.0" />
       <Label layoutX="336.0" layoutY="23.0" text="Дата" />
-      <Button layoutX="129.0" layoutY="101.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
+      <Button fx:id="buttonOne" layoutX="129.0" layoutY="101.0" mnemonicParsing="false" onAction="#onAddClick" text="Добавить" />
       <Button layoutX="227.0" layoutY="101.0" mnemonicParsing="false" onAction="#onAnnulmentClick" text="Отменить" />
    </children>
 </AnchorPane>

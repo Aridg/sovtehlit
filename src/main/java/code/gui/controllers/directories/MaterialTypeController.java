@@ -66,6 +66,30 @@ public class MaterialTypeController extends IDirectoryController{
     @Override
     protected void onEditClick(ActionEvent event) {
 
+        int selectedIndex = materialTypeTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Выберите строку для удаления");
+            alert.showAndWait();
+            return;
+        }
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        MaterialTypeEntity elem = session.createQuery("from MaterialTypeEntity where id = :id", MaterialTypeEntity.class)
+                .setParameter("id", materialTypeTable.getSelectionModel().getSelectedItem().getId())
+                .getSingleResult();
+        session.close();
+
+        GuiForm<AnchorPane, MaterialTypeInputController> form  = new GuiForm<AnchorPane, MaterialTypeInputController>(MenuType.MATERIAL_TYPE_INPUT.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        stage.setTitle("Изменение типа матреиала");
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        form.getController().setThisStage(stage);
+        form.getController().setParentController(this);
+        form.getController().setSelectMaterialType(elem);
+        form.getController().chanhgeForm();
+        stage.showAndWait();
     }
 
     @Override
@@ -106,7 +130,7 @@ public class MaterialTypeController extends IDirectoryController{
         alert.showAndWait();
     }
     public void Update(){
-        onUpdateClick(new ActionEvent());
+        onUpdateClick(null);
     }
 
 }

@@ -6,6 +6,7 @@ import code.hibernate.HibernateSessionFactory;
 import code.hibernate.directories.ContractEntity;
 import code.hibernate.directories.CustomersEntity;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -19,12 +20,15 @@ import java.util.Optional;
  * Created by Алексей on 10.06.2017.
  */
 public class ContractInputController implements IControllerInput {
+    @FXML private Button buttonOne;
     @FXML private TextField nameContract;
     @FXML private DatePicker date;
 
     private Stage thisStage;
     private CustomersEntity selectedCustomer;
     private ContractsController parentController;
+    private ContractEntity selectContract;
+
 
     @Override
     public void onAddClick(ActionEvent event) {
@@ -58,8 +62,38 @@ public class ContractInputController implements IControllerInput {
 
     @Override
     public void onAnnulmentClick(ActionEvent event) {
-
         thisStage.close();
+    }
+
+    @Override
+    public void onEditClick(ActionEvent event) {
+        Session session = HibernateSessionFactory.getSession();
+        session.beginTransaction();
+        selectContract.setDate(Date.valueOf(date.getValue()));
+        selectContract.setName(nameContract.getText());
+        session.update(selectContract);
+        session.getTransaction().commit();
+        session.close();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Договор успешно изменен");
+        alert.setTitle("OK!");
+        alert.setHeaderText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            thisStage.close();
+            parentController.Update();
+        }
+    }
+
+    public void chanhgeForm(){
+        nameContract.setText(selectContract.getName());
+        date.setValue(selectContract.getDateP());
+        buttonOne.setText("Изменить");
+        buttonOne.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                onEditClick(event);
+            }
+        });
     }
 
     public void setThisStage(Stage thisStage) {
@@ -70,5 +104,8 @@ public class ContractInputController implements IControllerInput {
     }
     public void setParentController(ContractsController parent) {
         this.parentController = parent;
+    }
+    public void setSelectContract(ContractEntity selectContract) {
+        this.selectContract = selectContract;
     }
 }
