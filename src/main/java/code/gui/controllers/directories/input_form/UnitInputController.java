@@ -47,6 +47,13 @@ public class UnitInputController implements IControllerInput {
                 parentController.Update();
             }
         }
+        else if(!isDouble(factor.getText())){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Множитель имеет тип вещественного числа (х.х)");
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR!");
+            alert.showAndWait();
+        }
+
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Не все параметры указаны");
             alert.setHeaderText(null);

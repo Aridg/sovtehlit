@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "PRODUCTION", schema = "sovtehlit")
 public class ProductionEntity implements IModel {
     private int id;
+    private int material_id;
     private String dse;
     private String name;
     private double netWeight;
@@ -34,6 +35,14 @@ public class ProductionEntity implements IModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name="material_id",nullable = false)
+    public int getMaterialId(){return material_id;}
+
+    public void setMaterialId(int material_id){
+        this.material_id = material_id;
     }
 
     @Basic

@@ -98,6 +98,7 @@ public class MaterialInputController implements IControllerInput {
     private void chanhgeForm(){
         Session session = HibernateSessionFactory.getSession();
         MaterialTypeEntity current =  session.createQuery("from MaterialTypeEntity where id=:id",MaterialTypeEntity.class).setParameter("id",selectMaterial.getType()).getSingleResult();
+        session.close();
         nameMaterial.setText(selectMaterial.getName());
         materialTypes.getSelectionModel().select(current);
         buttonOne.setText("Изменить");

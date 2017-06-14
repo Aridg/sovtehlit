@@ -58,6 +58,11 @@ public class MaterialsEntity implements IModel {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     @Basic
     @Column(name = "type", nullable = false)
     public int getType() {

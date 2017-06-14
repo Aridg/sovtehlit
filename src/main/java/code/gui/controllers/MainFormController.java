@@ -100,6 +100,14 @@ public class MainFormController implements IController{
     }
 
     public void productionMenuOnClick(ActionEvent event) {
+
+        GuiForm<AnchorPane, ProductionsController> form = new GuiForm<>(MenuType.PRODUCTIONS.getFilePath());
+        AnchorPane pane = form.getParent();
+
+        popUpStage.setTitle("Продукция");
+        Scene scene = new Scene(pane);
+        popUpStage.setScene(scene);
+        popUpStage.showAndWait();
     }
 
     public void unitsMenuOnClick(ActionEvent event) {
