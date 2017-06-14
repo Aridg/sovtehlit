@@ -37,6 +37,7 @@ public class ProductionsController extends IDirectoryController {
     @FXML private TableColumn<ProductionEntity, Double> fillerWeightFormColumn;
     @FXML private TableColumn<ProductionEntity, Integer> countInFormColumn;
     @FXML private TableColumn<ProductionEntity, Double> weightFormColumn;
+    @FXML private TableColumn<ProductionEntity, String> nameMaterialColumn;
 
     private ObservableList<ProductionEntity> productionModels = FXCollections.observableArrayList();
 
@@ -48,6 +49,7 @@ public class ProductionsController extends IDirectoryController {
         fillerWeightFormColumn.setCellValueFactory(cellData->cellData.getValue().fillerWeightFormPProperty().asObject());
         countInFormColumn.setCellValueFactory(cellData->cellData.getValue().countInFormPProperty().asObject());
         weightFormColumn.setCellValueFactory(cellData->cellData.getValue().weightFormPProperty().asObject());
+        nameMaterialColumn.setCellValueFactory(cellData->cellData.getValue().NameMaterialPProperty());
         productionTable.setItems(productionModels);
         getProductionModels();
         productionTable.setColumnResizePolicy(param -> false);

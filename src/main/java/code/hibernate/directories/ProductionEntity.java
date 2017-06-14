@@ -1,7 +1,9 @@
 package code.hibernate.directories;
 
+import code.hibernate.HibernateSessionFactory;
 import code.hibernate.IModel;
 import javafx.beans.property.*;
+import org.hibernate.Session;
 
 import javax.persistence.*;
 
@@ -26,6 +28,7 @@ public class ProductionEntity implements IModel {
     private DoubleProperty fillerWeightFormP = new SimpleDoubleProperty();
     private IntegerProperty countInFormP = new SimpleIntegerProperty();
     private DoubleProperty weightFormP = new SimpleDoubleProperty();
+    private StringProperty nameMaterialP = new SimpleStringProperty();
 
     @Id
     @Column(name = "id", nullable = false)
@@ -43,6 +46,7 @@ public class ProductionEntity implements IModel {
 
     public void setMaterialId(int material_id){
         this.material_id = material_id;
+        setNameMaterial();
     }
 
     @Basic
@@ -146,6 +150,20 @@ public class ProductionEntity implements IModel {
         return result;
     }
 
+
+    @Transient
+    public String getNameMaterialP() {
+        return nameMaterialP.get();
+    }
+
+    public StringProperty NameMaterialPProperty() {
+        return nameMaterialP;
+    }
+
+    public void setNameMaterialP(String nameMaterialP) {
+        this.nameMaterialP.set(nameMaterialP);
+    }
+
     @Transient
     public String getDseP() {
         return dseP.get();
@@ -222,5 +240,13 @@ public class ProductionEntity implements IModel {
 
     public void setWeightFormP(double weightFormP) {
         this.weightFormP.set(weightFormP);
+    }
+
+    @Transient
+    public void setNameMaterial(){
+        Session session = HibernateSessionFactory.getSession();
+        MaterialsEntity elem = session.createQuery("from MaterialsEntity where id=:id",MaterialsEntity.class).setParameter("id",getMaterialId()).getSingleResult();
+        session.close();
+        setNameMaterialP(elem.getName());
     }
 }
